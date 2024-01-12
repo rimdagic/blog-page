@@ -1,0 +1,28 @@
+
+
+/* ALL PAGES */
+body {
+    background-color: #283128;
+    color: #E9F1F1;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+/* LOGIN PAGE */
+#login-body {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+#login-form {
+    align-items: start;
+    justify-content: start;
+}
+
+#login-form-div{
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
