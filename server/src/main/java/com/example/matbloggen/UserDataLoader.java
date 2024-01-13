@@ -3,6 +3,7 @@ package com.example.matbloggen;
 import com.example.matbloggen.models.User;
 import com.example.matbloggen.repository.UserRepository;
 import com.example.matbloggen.service.UserService;
+import com.example.matbloggen.utility.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,12 @@ import java.util.UUID;
 public class UserDataLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PasswordEncoderUtil passwordEncoderUtil;
     @Autowired
-    public UserDataLoader(UserRepository userRepository, UserService userService) {
+    public UserDataLoader(UserRepository userRepository, UserService userService, PasswordEncoderUtil passwordEncoderUtil) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.passwordEncoderUtil = passwordEncoderUtil;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class UserDataLoader implements CommandLineRunner {
     private void createUser(String email, String password, String authority){
         if(!userService.doesUserExist(email)) {
             String userEmail = email;
-            String userPassword = password;
+            String userPassword = passwordEncoderUtil.encodePassword(password);
             String userAuthority = authority;
             UUID userId = UUID.randomUUID();
 
