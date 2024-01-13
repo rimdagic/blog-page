@@ -14,7 +14,6 @@ public class JwtUtil {
     private String secretKey;
 
     public String createToken(String subject, String email) {
-        System.out.println("secretkey " + secretKey);
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         return JWT.create()

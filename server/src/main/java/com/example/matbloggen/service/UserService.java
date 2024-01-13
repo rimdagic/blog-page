@@ -37,7 +37,7 @@ public class UserService {
                 User user = optionalUser.get();
                 //will compare the raw password with the hashed one along with the salt, if they match, its ok
                 if (passwordEncoderUtil.verifyPassword(password, user.getPassword())) {
-                    return "Generated token: " + jwtUtil.createToken(String.valueOf(user.getId()), user.getEmail());
+                    return jwtUtil.createToken(String.valueOf(user.getId()), user.getEmail());
                 } else {
                     throw new WrongPasswordException("wrong password, cannot generate token");
                 }
