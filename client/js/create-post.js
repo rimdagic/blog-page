@@ -1,13 +1,24 @@
 function submitForm() {
     var formData = {
         headline: document.getElementById('headline').value,
-       postContent: document.getElementById('post-content').value
+        content: document.getElementById('content').value
     };
+
+
+    if (!headline.checkValidity()) {
+        alert('Ange blogginläggets rubrik.');
+        return;
+    }
+
+    if (!content.checkValidity()) {
+        alert('Fyll i blogginläggets innehåll.');
+        return;
+    }
 
     console.log("Sending request")
 
 
-    fetch('http://localhost:8080/login', {
+    fetch('http://localhost:8080/blog-post', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
