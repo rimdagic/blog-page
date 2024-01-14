@@ -1,35 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matbloggen - create post</title>
+    <title>Matbloggen - Nytt inlägg</title>
     <link rel="stylesheet" href="css/create-post.css">
     <script src="js/create-post.js" defer></script>
 </head>
+
 <body>
     <div id="create-post-page-container">
 
         <div id="main-menu">
-            <span>EMAIL</span>
-            <a href="index.html">HOME</a>
-            <a href="">LOGOUT</a>
+            <span>EPOST</span>
+            <a href="index.html">STARTSIDA</a>
+            <a href="">LOGGA UT</a>
         </div>
 
 
-    <h1>Matbloggen</h1>
-    <h2>Skapa nytt inlägg</h2>
-    <form id="create-post-form" >
-        <div id="create-post-form-div">
-            <label for="headline">Rubrik: </label><br>
-            <input type="text" id="headline" name="headline">
-        </div>
-        <div id="create-post-form-div">
-            <label for="post-content">Blogginlägg: </label></br>
-            <textarea type="text" id="post-content" name="post-content" rows="10" cols="50"></textarea>
-        </div>
-        <button type="button" onclick="submitForm()">Publicera</button>
-    </form>
-</div>
+        <h1>Matbloggen</h1>
+        <h2>Skapa nytt inlägg</h2>
+        <form id="create-post-form">
+            <div id="create-post-form-div">
+                <label for="headline">Rubrik: </label><br>
+                <input type="text" id="headline" name="headline" maxlength="100" required>
+            </div>
+            <div id="create-post-form-div">
+                <label for="content">Blogginlägg: </label></br>
+                <textarea type="text" id="content" name="content" rows="10" cols="50" maxlength="5000"
+                    required></textarea>
+            </div>
+            <button type="button" onclick="submitForm()">Publicera</button>
+        </form>
+    </div>
 </body>
+
 </html>
