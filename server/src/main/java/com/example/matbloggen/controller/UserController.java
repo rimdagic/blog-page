@@ -40,6 +40,5 @@ public class UserController {
         response.addCookie(cookie);
 
         return ResponseEntity.ok("Login successful");
-
     }
 }
