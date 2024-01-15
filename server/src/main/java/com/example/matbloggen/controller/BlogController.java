@@ -33,6 +33,8 @@ public class BlogController {
 
                     jwt = cookie.getValue();
 
+                    System.out.println(jwt);
+
                     blogService.postBlog(postBlogDto, jwt);
                     return ResponseEntity.ok("Post success");
                 }

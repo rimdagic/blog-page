@@ -24,6 +24,7 @@ function submitForm() {
         headers: {
             'Content-Type': 'application/json',
         },
+        "credentials": "include",
         body: JSON.stringify(formData),
     })
         .then(response => response.text()) // Läs svaret som text
@@ -32,7 +33,7 @@ function submitForm() {
 
             if (data === "Login successful") {
                 // Redirect to a new page
-                window.location.href = "http://localhost:5500/home.html";
+               window.location.href = "http://localhost:5500/home.html";
             }
 
         })
