@@ -6,10 +6,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class BlogController {
@@ -42,5 +41,17 @@ public class BlogController {
         }
 
         return ResponseEntity.status(401).body("Could not create new post due to: Unable to authenticate user");
+    }
+
+    @GetMapping("/all-posts")
+    public ResponseEntity<List> getPosts(){
+        return ResponseEntity.ok(blogService.getAll());
+    }
+
+
+    @GetMapping("/search-posts")
+    public ResponseEntity<List> findPosts(@RequestParam String searchWord){
+
+        return ResponseEntity.ok(blogService.getSpecific(searchWord));
     }
 }

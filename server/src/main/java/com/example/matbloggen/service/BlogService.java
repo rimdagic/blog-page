@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,6 +28,11 @@ public class BlogService {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+    }
+
+    public List<Blog> getAll() {
+        List allPosts = blogRepository.findAll();
+        return allPosts;
     }
 
     public void postBlog(PostBlogDto postBlogDto, String token) {
@@ -53,5 +60,13 @@ public class BlogService {
         } catch (JWTVerificationException e) {
             throw new RuntimeException("JWT verification failed", e);
         }
+    }
+
+    public List<Blog> getSpecific(String searchWord) {
+
+        List<Blog> searchResult = blogRepository.findByHeadlineContaining(searchWord);
+
+        return searchResult;
+       // return blogRepository.findBySearchWord(searchWord);
     }
 }
