@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
 public class UserController {
 
     private UserService userService;
@@ -30,16 +30,16 @@ public class UserController {
 
         String jwtToken =  userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
 
+        System.out.println(jwtToken);
         Cookie cookie = new Cookie("jwtToken", jwtToken);
         cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
         cookie.setPath("/"); // Set the cookie path
 
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
 
         return ResponseEntity.ok("Login successful");
-
     }
 }

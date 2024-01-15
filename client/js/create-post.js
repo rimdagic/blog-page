@@ -2,8 +2,6 @@ function submitForm() {
     var formData = {
         headline: document.getElementById('headline').value,
         content: document.getElementById('content').value,
-        date: new Date(),
-        token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYTc0NDM2NS02ZDQ0LTQwMTQtODMxZC01MzVmZDZhNTQ5NjEiLCJleHAiOjE3MDUyNjc5MjgsImVtYWlsIjoib25lQG9uZS5jb20ifQ.yNlpj1l4P5Y972M6fBeMTeiQmTiNWK666d9ptRepQu"
     };
 
 
@@ -22,6 +20,7 @@ function submitForm() {
 
     fetch('http://localhost:8080/blog-post', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },

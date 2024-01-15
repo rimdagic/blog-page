@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -27,19 +28,24 @@ public class BlogService {
         this.jwtUtil = jwtUtil;
     }
 
-    public void postBlog(PostBlogDto postBlogDto) {
+    public void postBlog(PostBlogDto postBlogDto, String token) {
         try {
-            UUID userUUID = UUID.fromString(jwtUtil.extractUserId(postBlogDto.token));
+            UUID userUUID = UUID.fromString(jwtUtil.extractUserId(token));
+
+            System.out.println("JWT from cookie: " + token);
 
             // Check if user exists in userRepository
             User user = userRepository.findById(userUUID)
                     .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+            Date date = new Date();
+
             Blog blog = new Blog();
             blog.setHeadline(postBlogDto.headline);
             blog.setContent(postBlogDto.content);
-            blog.setDate(postBlogDto.date);
+            blog.setDate(date);
             blog.setUser(user);
+
             blogRepository.save(blog);
 
         } catch (TokenExpiredException e) {
