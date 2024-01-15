@@ -39,8 +39,6 @@ public class BlogService {
         try {
             UUID userUUID = UUID.fromString(jwtUtil.extractUserId(token));
 
-            System.out.println("JWT from cookie: " + token);
-
             // Check if user exists in userRepository
             User user = userRepository.findById(userUUID)
                     .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -67,6 +65,5 @@ public class BlogService {
         List<Blog> searchResult = blogRepository.findByHeadlineContaining(searchWord);
 
         return searchResult;
-       // return blogRepository.findBySearchWord(searchWord);
     }
 }
