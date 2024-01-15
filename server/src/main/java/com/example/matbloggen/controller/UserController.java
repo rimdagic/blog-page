@@ -30,7 +30,6 @@ public class UserController {
 
         String jwtToken =  userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
 
-        System.out.println(jwtToken);
         Cookie cookie = new Cookie("jwtToken", jwtToken);
         cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
         cookie.setPath("/"); // Set the cookie path

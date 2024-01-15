@@ -22,7 +22,7 @@ public class SecurityConfig {
                         .requestMatchers("/all-posts").permitAll()
                         .requestMatchers("/search-posts").permitAll()
 
-                        .requestMatchers("/blog-post").authenticated()
+                        .requestMatchers("/blog-post").permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable());
