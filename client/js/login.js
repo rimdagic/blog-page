@@ -32,7 +32,7 @@ function submitForm() {
 
             if (data === "Login successful") {
                 // Redirect to a new page
-                window.location.href = "http://localhost:5500/create-post.html";
+                window.location.href = "http://localhost:5500/home.html";
             }
 
         })
