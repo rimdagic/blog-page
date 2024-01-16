@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const postContentElement = document.getElementById('post-content');
 
             postTitleElement.textContent = blogPost.headline;
-            postDateElement.textContent = new Date(blogPost.date).toLocaleDateString();
-            postContentElement.innerHTML = blogPost.content;
+            postDateElement.textContent = new Date(blogPost.date).toLocaleString();
+            postContentElement.innerText = blogPost.content;
         })
         .catch(error => {
             console.error('Error fetching blog post details:', error);
