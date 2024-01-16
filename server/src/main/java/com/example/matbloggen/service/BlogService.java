@@ -65,6 +65,10 @@ public class BlogService {
         return searchResult;
     }
 
+    public void deleteAllBlogPosts() {
+        blogRepository.deleteAll();
+    }
+
     public Blog getBlogById(UUID id){
         System.out.println("uuid " + id.toString());
         return blogRepository.getBlogById(id);

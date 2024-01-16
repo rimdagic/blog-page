@@ -28,16 +28,12 @@ public class BlogController {
 
         String jwt = "";
         Cookie[] cookies = request.getCookies();
-
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName())) {
-
                     jwt = cookie.getValue();
-
-                    System.out.println(jwt);
-
                     blogService.postBlog(postBlogDto, jwt);
+
                     return ResponseEntity.ok("Post success");
                 }
             }
@@ -47,7 +43,7 @@ public class BlogController {
     }
 
     @GetMapping("/all-posts")
-    public ResponseEntity<List> getPosts(){
+    public ResponseEntity<List> getPosts() {
         return ResponseEntity.ok(blogService.getAll());
     }
 
@@ -55,6 +51,15 @@ public class BlogController {
     public ResponseEntity<List> findPosts(@RequestParam String searchWord){
         return ResponseEntity.ok(blogService.getSpecific(searchWord));
     }
+
+
+    @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
+    @DeleteMapping("/delete-posts")
+    public ResponseEntity<String> deleteAllPosts() {
+        blogService.deleteAllBlogPosts();
+        return ResponseEntity.ok("All blog posts in 'Matbloggen' has been deleted.");
+    }
+
 
     @GetMapping("/post")
     public ResponseEntity<Blog> getBlogById(@RequestParam UUID id) {
