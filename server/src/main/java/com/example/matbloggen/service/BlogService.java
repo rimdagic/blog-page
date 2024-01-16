@@ -24,7 +24,7 @@ public class BlogService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil){
+    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
@@ -61,9 +61,11 @@ public class BlogService {
     }
 
     public List<Blog> getSpecific(String searchWord) {
-
         List<Blog> searchResult = blogRepository.findByHeadlineContaining(searchWord);
-
         return searchResult;
+    }
+
+    public void deleteAllBlogPosts() {
+        blogRepository.deleteAll();
     }
 }
