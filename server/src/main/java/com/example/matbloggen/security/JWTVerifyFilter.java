@@ -9,7 +9,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,11 +24,9 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
     private UserDetailsService userService;
     private CustomUserDetailsService customUserDetailsService;
 
-
     public JWTVerifyFilter(CustomUserDetailsService customUserDetailsService) {
-            this.customUserDetailsService = customUserDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -39,7 +36,6 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
         String authCookie = "";
 
         if (cookies != null) {
-
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName())) {
                     authCookie = cookie.getValue();
@@ -47,7 +43,7 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
             }
         }
 
-        if(authCookie == ""){
+        if (authCookie.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -58,18 +54,13 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
                     .verify(authCookie);
 
             var user = this.customUserDetailsService.loadUserById(decodedJWT.getSubject());
-
             var auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
-
-            System.out.println(user.getEmail());
-
-            System.out.println(auth.getAuthorities());
-            System.out.println(auth.getName().toString());
-
             filterChain.doFilter(request, response);
 
         } catch (JWTVerificationException exception) {
+            response.addCookie(new Cookie("jwtToken", ""));
+            filterChain.doFilter(request, response);
             throw new IllegalStateException("Failed to authenticate");
         }
     }
