@@ -10,19 +10,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
 public class BlogController {
 
     private BlogService blogService;
 
-    public BlogController(BlogService blogService) {
+    public BlogController(BlogService blogService){
         this.blogService = blogService;
     }
 
     @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
     @PostMapping("/blog-post")
-    public ResponseEntity<String> post(@RequestBody PostBlogDto postBlogDto, HttpServletRequest request) {
+    public ResponseEntity<String> post(@RequestBody PostBlogDto postBlogDto, HttpServletRequest request){
 
         String jwt = "";
         Cookie[] cookies = request.getCookies();
@@ -45,9 +47,8 @@ public class BlogController {
         return ResponseEntity.ok(blogService.getAll());
     }
 
-
     @GetMapping("/search-posts")
-    public ResponseEntity<List> findPosts(@RequestParam String searchWord) {
+    public ResponseEntity<List> findPosts(@RequestParam String searchWord){
         return ResponseEntity.ok(blogService.getSpecific(searchWord));
     }
 
@@ -59,4 +60,10 @@ public class BlogController {
         return ResponseEntity.ok("All blog posts in 'Matbloggen' has been deleted.");
     }
 
+
+    @GetMapping("/post")
+    public ResponseEntity<Blog> getBlogById(@RequestParam UUID id) {
+        Blog blog = blogService.getBlogById(id);
+        return ResponseEntity.ok(blog);
+    }
 }

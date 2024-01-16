@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/all-posts").permitAll()
                         .requestMatchers("/search-posts").permitAll()
+                        .requestMatchers("/post").permitAll()
 
                         .requestMatchers("/blog-post").hasAuthority("USER")
                         .requestMatchers("/delete-posts").hasAuthority("ADMIN")

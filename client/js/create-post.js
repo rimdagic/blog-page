@@ -5,6 +5,7 @@ function submitForm() {
     };
 
 
+    
     if (!headline.checkValidity()) {
         alert('Ange blogginläggets rubrik.');
         return;

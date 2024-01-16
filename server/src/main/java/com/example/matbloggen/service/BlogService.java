@@ -24,7 +24,7 @@ public class BlogService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil) {
+    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil){
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
@@ -67,5 +67,10 @@ public class BlogService {
 
     public void deleteAllBlogPosts() {
         blogRepository.deleteAll();
+    }
+
+    public Blog getBlogById(UUID id){
+        System.out.println("uuid " + id.toString());
+        return blogRepository.getBlogById(id);
     }
 }
