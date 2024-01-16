@@ -3,7 +3,6 @@ package com.example.matbloggen.utility;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,8 +10,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret-key}")
-    private String secretKey;
+    String variableName = "SECRET_KEY";
+    String secretKey = System.getenv(variableName);
 
     public String createToken(String subject, String email) {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);

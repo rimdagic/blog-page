@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 @Entity
@@ -23,4 +26,9 @@ public class User {
     private String password;
 
     private String authority;
+
+    public Collection<GrantedAuthority> getAuthorities(){
+        GrantedAuthority grantedAuthority = this::getAuthority;
+        return Collections.singleton(grantedAuthority);
+    }
 }
