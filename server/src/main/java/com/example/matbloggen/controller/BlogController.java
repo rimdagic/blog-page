@@ -1,6 +1,7 @@
 package com.example.matbloggen.controller;
 
 import com.example.matbloggen.dtos.PostBlogDto;
+import com.example.matbloggen.models.Blog;
 import com.example.matbloggen.service.BlogService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
 public class BlogController {
 
     private BlogService blogService;
@@ -48,10 +51,14 @@ public class BlogController {
         return ResponseEntity.ok(blogService.getAll());
     }
 
-
     @GetMapping("/search-posts")
     public ResponseEntity<List> findPosts(@RequestParam String searchWord){
-
         return ResponseEntity.ok(blogService.getSpecific(searchWord));
+    }
+
+    @GetMapping("/post")
+    public ResponseEntity<Blog> getBlogById(@RequestParam UUID id) {
+        Blog blog = blogService.getBlogById(id);
+        return ResponseEntity.ok(blog);
     }
 }

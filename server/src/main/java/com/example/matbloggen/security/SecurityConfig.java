@@ -18,16 +18,18 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http, CustomUserDetailsService userDetailsService) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .addFilterAfter(new JWTVerifyFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/all-posts").permitAll()
                         .requestMatchers("/search-posts").permitAll()
+                        .requestMatchers("/post").permitAll()
 
                         .requestMatchers("/blog-post").hasAuthority("USER")
                 )
-                .httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable());
+                .httpBasic(Customizer.withDefaults());
+
 
         return http.build();
     }

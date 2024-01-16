@@ -61,9 +61,12 @@ public class BlogService {
     }
 
     public List<Blog> getSpecific(String searchWord) {
-
         List<Blog> searchResult = blogRepository.findByHeadlineContaining(searchWord);
-
         return searchResult;
+    }
+
+    public Blog getBlogById(UUID id){
+        System.out.println("uuid " + id.toString());
+        return blogRepository.getBlogById(id);
     }
 }

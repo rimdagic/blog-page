@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface BlogRepository extends JpaRepository<Blog, UUID> {
 
     List<Blog> findByHeadlineContaining(String searchWord);
+    Blog getBlogById(UUID id);
 }
