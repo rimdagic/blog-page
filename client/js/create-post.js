@@ -26,11 +26,12 @@ function submitForm() {
         },
         body: JSON.stringify(formData),
     })
-        .then(response => response.text())
+        .then(response => {
+            alert(response.status)
+            response.text()})
 
         .then(data => {
-
-            console.log(data);
+            window.location.href = "http://localhost:5500/home.html";
         })
         .catch(error => {
             console.error('Error:', error);

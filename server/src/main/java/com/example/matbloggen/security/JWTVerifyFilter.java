@@ -47,7 +47,7 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
             }
         }
 
-        if(authCookie == ""){
+        if(authCookie.isBlank()){
             filterChain.doFilter(request, response);
             return;
         }
@@ -62,14 +62,12 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
             var auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            System.out.println(user.getEmail());
-
-            System.out.println(auth.getAuthorities());
-            System.out.println(auth.getName().toString());
-
             filterChain.doFilter(request, response);
 
         } catch (JWTVerificationException exception) {
+            response.addCookie(new Cookie("jwtToken", ""));
+
+            filterChain.doFilter(request, response);
             throw new IllegalStateException("Failed to authenticate");
         }
     }

@@ -1,4 +1,6 @@
 function submitForm() {
+
+
     var formData = {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value
@@ -19,12 +21,14 @@ function submitForm() {
     console.log("Sending request")
 
 
+
+
     fetch('http://localhost:8080/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        "credentials": "include",
+       "credentials": "include",
         body: JSON.stringify(formData),
     })
         .then(response => response.text()) // Läs svaret som text
