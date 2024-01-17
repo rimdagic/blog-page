@@ -5,13 +5,12 @@ import com.example.matbloggen.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.UUID;
 
 
 @RestController
@@ -41,4 +40,10 @@ public class UserController {
 
         return ResponseEntity.ok("Login successful");
     }
+
+/*    @GetMapping("/user")
+    public ResponseEntity<String> getUserEmail(@RequestParam UUID id){
+        String email = userService.getUserEmail(id);
+        return ResponseEntity.ok(email);
+    }*/
 }
