@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.UUID;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
@@ -39,6 +41,12 @@ public class UserController {
 
         return ResponseEntity.ok("Login successful");
     }
+
+/*    @GetMapping("/user")
+    public ResponseEntity<String> getUserEmail(@RequestParam UUID id){
+        String email = userService.getUserEmail(id);
+        return ResponseEntity.ok(email);
+    }*/
 
     @PostMapping("/user/logout")
     public ResponseEntity<String> logout(HttpServletResponse response){

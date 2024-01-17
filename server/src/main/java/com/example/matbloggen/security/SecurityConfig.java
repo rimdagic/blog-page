@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .addFilterAfter(new JWTVerifyFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/user").permitAll()
                         .requestMatchers("/user/logout").permitAll()
                         .requestMatchers("/all-posts").permitAll()
                         .requestMatchers("/user/auth").permitAll()

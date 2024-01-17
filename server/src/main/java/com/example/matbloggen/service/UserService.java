@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -83,4 +84,9 @@ public class UserService {
         }
         return false;
     }
+
+/*    public String getUserEmail(UUID id) {
+        User user = userRepository.findEmailById(id);
+        return user.getEmail();
+    }*/
 }
