@@ -61,3 +61,18 @@ function removeAllChildren(element) {
         element.removeChild(element.firstChild);
     }
 }
+
+function deleteAll(){
+    var requestOptions = {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      };
+      
+      fetch("http://localhost:8080/delete-posts", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+}

@@ -26,3 +26,8 @@ a, a:active, :visited{
     background-color: black;
     padding: 5px;
 }
+
+#admin-headline{
+    color: #ff0000;
+    font-size: 3em;
+}

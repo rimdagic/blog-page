@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matbloggen</title>
+    <link rel="stylesheet" href="css/home.css">
+    <script src="js/home.js" defer> </script>
+</head >
+            <body>
+
+
+                <div id="home-page-container">
+                    <div id="main-menu">
+                        <span>EPOST</span>
+                        <a href="home.html">STARTSIDA</a>
+                        <a href="">LOGGA UT</a>
+                    </div>
+
+
+
+                    <div id="admin-headline">ADMIN</div>
+                    <button type="button" onclick="deleteAll()">Radera samtliga inlägg</button>
+
+
+
+                    <h1>Matbloggen</h1>
+                    <h2>Blogginlägg</h2>
+
+                    
+
+                    <form>
+                        <input type="text" maxlength="50" placeholder="Sök på rubrik" id="search-field"><br>
+                        <button type="button" onclick="search()">Sök</button>
+                    </form>
+
+                    <ul id="posts-list">
+                    </ul>
+
+                </div>
+            </body>
+</html >
