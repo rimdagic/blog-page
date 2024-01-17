@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.UUID;
-
-
 @RestController
 @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
 public class UserController {
@@ -39,7 +36,19 @@ public class UserController {
 
         response.addCookie(cookie);
 
-        return ResponseEntity.ok("Login successful");
+        String authority = userService.getAuthorityByEmail(loginRequestDto.email);
+        if(authority.equals("ADMIN")){
+            System.out.println("admin");
+            return ResponseEntity.ok("Login successful admin");
+        }
+        else if(authority.equals("USER")){
+            System.out.println("user");
+            return ResponseEntity.ok("Login successful");
+        }
+        else{
+            System.out.println("error");
+            return ResponseEntity.ok("not ok");
+        }
     }
 
 /*    @GetMapping("/user")

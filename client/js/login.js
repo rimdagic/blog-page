@@ -32,10 +32,10 @@ function submitForm() {
             console.log('Server Response:', data);
 
             if (data === "Login successful") {
-                // Redirect to a new page
                window.location.href = "http://localhost:5500/home.html";
+            }else if(data === "Login successful admin"){
+                window.location.href = "http://localhost:5500/admin-panel.html";
             }
-
         })
         .catch(error => {
             console.error('Error:', error);
