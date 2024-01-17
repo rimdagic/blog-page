@@ -59,6 +59,7 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (JWTVerificationException exception) {
+            filterChain.doFilter(request, response);
             throw new IllegalStateException("Failed to authenticate");
         }
     }
