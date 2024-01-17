@@ -30,7 +30,7 @@ public class UserController {
         Cookie cookie = new Cookie("jwtToken", jwtToken);
         cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
         cookie.setPath("/"); // Set the cookie path
-
+        cookie.setAttribute("SameSite", "Lax");
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
 
@@ -64,6 +64,7 @@ public class UserController {
         jwtTokenCookie.setMaxAge(0);
         jwtTokenCookie.setSecure(false); // Set to true if served over HTTPS
         jwtTokenCookie.setHttpOnly(true);
+        jwtTokenCookie.setAttribute("SameSite", "Lax");
 
         response.addCookie(jwtTokenCookie);
 
