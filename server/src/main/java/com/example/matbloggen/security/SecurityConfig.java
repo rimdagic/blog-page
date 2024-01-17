@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user").permitAll()
+                        .requestMatchers("/user/logout").permitAll()
                         .requestMatchers("/all-posts").permitAll()
+                        .requestMatchers("/user/auth").permitAll()
                         .requestMatchers("/search-posts").permitAll()
                         .requestMatchers("/post").permitAll()
 

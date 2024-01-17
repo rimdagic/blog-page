@@ -3,6 +3,7 @@ package com.example.matbloggen.controller;
 import com.example.matbloggen.dtos.LoginRequestDto;
 import com.example.matbloggen.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,4 +47,24 @@ public class UserController {
         String email = userService.getUserEmail(id);
         return ResponseEntity.ok(email);
     }*/
+
+    @PostMapping("/user/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response){
+        Cookie jwtTokenCookie = new Cookie("jwtToken", "");
+        jwtTokenCookie.setPath("/");
+        jwtTokenCookie.setMaxAge(0);
+        jwtTokenCookie.setSecure(false); // Set to true if served over HTTPS
+        jwtTokenCookie.setHttpOnly(true);
+
+        response.addCookie(jwtTokenCookie);
+
+        return ResponseEntity.ok("Succesfully logged out");
+    }
+
+    @GetMapping("/user/auth")
+    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request){
+        boolean isAuthenticated = userService.checkAuth(request);
+        return ResponseEntity.ok(isAuthenticated);
+    }
+
 }

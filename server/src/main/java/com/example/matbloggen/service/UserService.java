@@ -6,6 +6,9 @@ import com.example.matbloggen.models.User;
 import com.example.matbloggen.repository.UserRepository;
 import com.example.matbloggen.utility.JwtUtil;
 import com.example.matbloggen.utility.PasswordEncoderUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +22,13 @@ public class UserService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoderUtil passwordEncoderUtil, JwtUtil jwtUtil){
+    public UserService(UserRepository userRepository, PasswordEncoderUtil passwordEncoderUtil, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoderUtil = passwordEncoderUtil;
         this.jwtUtil = jwtUtil;
     }
 
-    public boolean doesUserExist(String email){
+    public boolean doesUserExist(String email) {
         Optional<User> existing = userRepository.findByEmail(email);
         return existing.isPresent();
     }
@@ -55,13 +58,31 @@ public class UserService {
         }
     }
 
-    public String getAuthorityByEmail(String email){
+    public String getAuthorityByEmail(String email) {
         Optional<User> OptionalUser = userRepository.findByEmail(email);
-        if(OptionalUser.isPresent()){
+        if (OptionalUser.isPresent()) {
             User user = OptionalUser.get();
             return user.getAuthority();
         }
-       return "no authority";
+        return "no authority";
+    }
+
+    public boolean checkAuth(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwtToken".equals(cookie.getName())) {
+                    try {
+                        jwtUtil.extractUserId(cookie.getValue());
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("Could not validate jwt token");
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 /*    public String getUserEmail(UUID id) {
