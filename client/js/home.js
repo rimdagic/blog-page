@@ -1,5 +1,7 @@
 var postsList = document.getElementById("posts-list");
 
+adjustToAuth();
+
 fetch('http://localhost:8080/all-posts')
     .then(response => {
         if (!response.ok) {
@@ -15,6 +17,19 @@ fetch('http://localhost:8080/all-posts')
         console.error('Error fetching blog posts:', error);
     });
 
+    function adjustToAuth(){
+    var requestOptions = {
+        method: 'GET',
+        redirect: 'follow',
+        credentials: "include"
+      };
+      
+      fetch("http://localhost:8080/user/auth", requestOptions)
+        .then(response => response.text())
+        .then(result => renderPage(result)
+        )
+        .catch(error => console.log('error', error));
+    }
 
 // Function to render blog posts in the HTML.
 function renderBlogPosts(blogPosts) {
@@ -76,3 +91,41 @@ function deleteAll(){
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 }
+
+function logout(){
+    var requestOptions = {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      };
+
+    fetch("http://localhost:8080/user/logout", requestOptions)
+    .then(response => {
+        response.text()
+        if(response.status === 200){
+            window.location.href = "http://localhost:5500/home.html";
+        }
+    })
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+
+function renderPage(authenticated){
+    var loginLink = document.getElementById("login-link")
+    var logoutLink = document.getElementById("logout-link")
+    var createPostButton = document.getElementById("create-post-btn")
+
+if(authenticated == "true"){
+        loginLink.style.display = "none"
+        logoutLink.style.display = "flex"
+    } 
+    else if (authenticated == "false") {
+        loginLink.style.display = "flex"
+        logoutLink.style.display = "none"
+        createPostButton.style.display = "none"
+
+    } 
+}
+
