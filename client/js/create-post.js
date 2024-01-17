@@ -27,7 +27,11 @@ function submitForm() {
         },
         body: JSON.stringify(formData),
     })
-        .then(response => response.text())
+        .then(response => {response.text()
+        if(response.status === 200){
+            window.location.href = "http://localhost:5500/home.html";
+        }
+    })
 
         .then(data => {
 
