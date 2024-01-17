@@ -88,7 +88,7 @@ function deleteAll(){
       
       fetch("http://localhost:8080/delete-posts", requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
+        .then(result => location.reload())
         .catch(error => console.log('error', error));
 }
 
