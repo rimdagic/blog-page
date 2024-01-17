@@ -3,12 +3,10 @@ package com.example.matbloggen.controller;
 import com.example.matbloggen.dtos.LoginRequestDto;
 import com.example.matbloggen.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,6 +51,12 @@ public class UserController {
         response.addCookie(jwtTokenCookie);
 
         return ResponseEntity.ok("Succesfully logged out");
+    }
+
+    @GetMapping("/user/auth")
+    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request){
+        boolean isAuthenticated = userService.checkAuth(request);
+        return ResponseEntity.ok(isAuthenticated);
     }
 
 }
