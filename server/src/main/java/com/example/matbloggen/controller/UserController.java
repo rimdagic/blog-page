@@ -57,6 +57,12 @@ public class UserController {
         return ResponseEntity.ok(email);
     }*/
 
+    @GetMapping("/user/email")
+    public ResponseEntity<String> getUserEmail(HttpServletRequest request){
+        String email = userService.getEmail(request);
+        return ResponseEntity.ok().body(email);
+    }
+
     @PostMapping("/user/logout")
     public ResponseEntity<String> logout(HttpServletResponse response){
         Cookie jwtTokenCookie = new Cookie("jwtToken", "");

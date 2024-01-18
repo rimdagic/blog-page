@@ -29,6 +29,8 @@ public class SecurityConfig {
                         .requestMatchers("/blog-post").hasAuthority("USER")
                         .requestMatchers("/blog-post").hasAuthority("ADMIN")
                         .requestMatchers("/delete-posts").hasAuthority("ADMIN")
+
+                        .requestMatchers("/user/email").hasAuthority("USER")
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
