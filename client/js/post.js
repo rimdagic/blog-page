@@ -1,3 +1,4 @@
+var emailDisplay = document.getElementById("email-display");
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get the post ID from the URL parameter
@@ -56,6 +57,7 @@ function adjustToAuth(){
         if(authenticated == "true"){
             loginLink.style.display = "none"
             logoutLink.style.display = "flex"
+            getEmail()
         } 
         else if (authenticated == "false") {
             loginLink.style.display = "flex"
@@ -82,4 +84,24 @@ function adjustToAuth(){
         })
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
+    }
+
+
+    function getEmail(){
+    
+        var requestOptions = {
+            method: 'GET',
+            credentials: 'include',
+            redirect: 'follow'
+          };
+          
+          fetch("http://localhost:8080/user/email", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                console.log(result)
+                emailDisplay.innerText = result;
+            }
+                
+                )
+            .catch(error => console.log('error', error));
     }
