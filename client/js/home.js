@@ -1,7 +1,12 @@
 var postsList = document.getElementById("posts-list");
 var emailDisplay = document.getElementById("email-display");
 
+
 adjustToAuth();
+
+
+
+
 
 fetch('http://localhost:8080/all-posts')
     .then(response => {
@@ -93,15 +98,27 @@ function deleteAll(){
         .catch(error => console.log('error', error));
 }
 
-function logout(){
-    var requestOptions = {
-        method: 'POST',
+function logout() {
+    // Fetch a new CSRF token
+    fetch('http://localhost:8080/csrf-token', {
+        method: 'GET',
         credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      };
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Use the newly obtained CSRF token in the logout request
+        var csrfToken = data.csrfToken;
 
+        var requestOptions = {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        };
+
+        
     fetch("http://localhost:8080/user/logout", requestOptions)
     .then(response => {
         response.text()
@@ -111,7 +128,12 @@ function logout(){
     })
     .then(result => console.log(result))
     .catch(error => console.log('error', error));
+})
 }
+
+
+      //console.log(csrfToken)
+
 
 function renderPage(authenticated){
     var loginLink = document.getElementById("login-link")
@@ -151,4 +173,6 @@ function getEmail(){
             )
         .catch(error => console.log('error', error));
 }
+
+
 

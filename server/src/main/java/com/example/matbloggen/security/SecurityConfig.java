@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -15,9 +18,11 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http, CustomUserDetailsService userDetailsService) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/user/login"))
+
                 .addFilterAfter(new JWTVerifyFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
+
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user").permitAll()
                         .requestMatchers("/user/logout").permitAll()
@@ -31,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/delete-posts").hasAuthority("ADMIN")
 
                         .requestMatchers("/user/email").hasAuthority("USER")
+
+                        .requestMatchers("/csrf-token").hasAuthority("USER")
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
