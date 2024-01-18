@@ -30,3 +30,11 @@ a, a:active, :visited{
 #back-button{
     margin-top: 2em;
 }
+
+#login-link {
+    display: none;
+}
+
+#logout-link {
+    display: none;
+}

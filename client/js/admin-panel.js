@@ -1,5 +1,4 @@
 var postsList = document.getElementById("posts-list");
-var emailDisplay = document.getElementById("email-display");
 
 adjustToAuth();
 
@@ -121,34 +120,33 @@ function renderPage(authenticated){
 if(authenticated == "true"){
         loginLink.style.display = "none"
         logoutLink.style.display = "flex"
-        getEmail();
+      //  getEmail();
     } 
     else if (authenticated == "false") {
         loginLink.style.display = "flex"
         logoutLink.style.display = "none"
         createPostButton.style.display = "none"
-       // emailDisplay.innerText = "EPOST"
 
     } 
 }
 
-function getEmail(){
-    
-    var requestOptions = {
-        method: 'GET',
-        credentials: 'include',
-        redirect: 'follow'
-      };
+// function getEmail(){
+//     var emailDisplay = document.getElementById("email-display");
+//     var requestOptions = {
+//         method: 'GET',
+//         credentials: 'include',
+//         redirect: 'follow'
+//       };
       
-      fetch("http://localhost:8080/user/email", requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            console.log(result)
-            emailDisplay.innerText = result;
-            //emailDisplay.appendChild;
-        }
+//       fetch("http://localhost:8080/user/email", requestOptions)
+//         .then(response => response.text())
+//         .then(result => {
+//             console.log(result)
+//             emailDisplay.innerText = result;
+//             //emailDisplay.appendChild;
+//         }
             
-            )
-        .catch(error => console.log('error', error));
-}
+//             )
+//         .catch(error => console.log('error', error));
+// }
 
