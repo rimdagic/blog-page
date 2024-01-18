@@ -85,8 +85,37 @@ public class UserService {
         return false;
     }
 
+    public String getEmail(HttpServletRequest request) {
+        String jwt = getJwtFromCookie(request);
+        String userId = jwtUtil.extractUserId(jwt);
+        Optional<User> optionalUser = userRepository.findById(UUID.fromString(userId));
+        if(optionalUser.isPresent()){
+            return optionalUser.get().getEmail();
+        } else return null;
+    }
+
 /*    public String getUserEmail(UUID id) {
         User user = userRepository.findEmailById(id);
         return user.getEmail();
     }*/
+
+
+    public String getJwtFromCookie(HttpServletRequest request) {
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwtToken".equals(cookie.getName())) {
+                    try {
+                        return cookie.getValue();
+                    } catch (Exception e) {
+                        System.out.println("Could not validate jwt token");
+                    }
+                }
+            }
+        }
+        return null;
+
+    }
 }
