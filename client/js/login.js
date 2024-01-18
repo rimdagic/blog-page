@@ -18,13 +18,22 @@ function submitForm() {
 
     console.log("Sending request")
 
+    var csrfToken = getCsrfToken();
+
+    if (!csrfToken) {
+        console.error('CSRF token is not available.');
+        return;
+    }else{
+        console.log("csrf token:" + csrfToken);
+    }
 
     fetch('http://localhost:8080/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken // Add this line to include the CSRF token
         },
-        "credentials": "include",
+        /* "credentials": "include", */
         body: JSON.stringify(formData),
     })
         .then(response => response.text()) // Läs svaret som text
@@ -40,4 +49,8 @@ function submitForm() {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+// Function to retrieve the CSRF token from the cookie or wherever it's stored
+function getCsrfToken() {
+    return document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, '$1');
 }

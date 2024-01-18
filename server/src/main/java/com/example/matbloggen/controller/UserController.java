@@ -12,7 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true")
 public class UserController {
 
     private UserService userService;
