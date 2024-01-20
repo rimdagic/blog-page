@@ -28,7 +28,7 @@ function submitForm() {
             'Content-Type': 'application/json',
   //          'X-CSRF-TOKEN': csrfToken // Add this line to include the CSRF token
         },
-        /* "credentials": "include", */
+        "credentials": "include", 
         body: JSON.stringify(formData),
     })
         .then(response => response.text()) // Läs svaret som text
