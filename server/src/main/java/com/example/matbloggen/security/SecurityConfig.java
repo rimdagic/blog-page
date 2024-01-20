@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
 @Configuration
@@ -18,12 +18,17 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http, CustomUserDetailsService userDetailsService) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/user/login")
-                        .ignoringRequestMatchers("/user/logout"))
+                .csrf((csrf) -> csrf
+                 //       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+                        .ignoringRequestMatchers("/user/login")
+                        .ignoringRequestMatchers("/user/logout"));
+
+        http
 
                 .addFilterAfter(new JWTVerifyFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-
+                        .requestMatchers("/delete-posts").hasAuthority("ADMIN")
                         .requestMatchers("/user/login").permitAll()
                         .requestMatchers("/user").permitAll()
                         .requestMatchers("/user/logout").permitAll()
@@ -34,7 +39,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/blog-post").hasAuthority("USER")
 
-                        .requestMatchers("/delete-posts").hasAuthority("ADMIN")
+
                         .requestMatchers("/user/email").authenticated()
                         .requestMatchers("/csrf-token").authenticated()
                 )
