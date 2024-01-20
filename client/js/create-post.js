@@ -27,6 +27,7 @@ function submitForm() {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
+            //'X-CSRF-TOKEN':
         },
         body: JSON.stringify(formData),
     })
@@ -104,6 +105,7 @@ function adjustToAuth(){
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                //'X-CSRF-TOKEN':
             }
           };
     

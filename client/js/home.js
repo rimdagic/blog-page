@@ -100,6 +100,7 @@ function deleteAll(){
 
 function logout() {
     // Fetch a new CSRF token
+    
     fetch('http://localhost:8080/csrf-token', {
         method: 'GET',
         credentials: 'include',
@@ -144,6 +145,7 @@ if(authenticated == "true"){
         loginLink.style.display = "none"
         logoutLink.style.display = "flex"
         getEmail();
+        getCsrfToken()
     } 
     else if (authenticated == "false") {
         loginLink.style.display = "flex"
@@ -176,3 +178,20 @@ function getEmail(){
 
 
 
+
+
+var CSRF;
+
+function getCsrfToken(){
+    fetch('http://localhost:8080/csrf-token', {
+        method: 'GET',
+        credentials: 'include',
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Use the newly obtained CSRF token in the logout request
+       console.log( data.csrfToken)
+       CSRF = data.csrfToken
+
+    })
+}
