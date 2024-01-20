@@ -41,6 +41,7 @@ function renderBlogPosts(blogPosts) {
         link.textContent = blogPosts[i].headline;
 
         listItem.appendChild(link);
+
         postsList.appendChild(listItem);
     }
 }
@@ -48,6 +49,7 @@ function renderBlogPosts(blogPosts) {
 
 function search() {
     var searchWord = document.getElementById("search-field").value
+
     removeAllChildren(postsList)
 
     fetch(`http://localhost:8080/search-posts?searchWord=${searchWord}`)

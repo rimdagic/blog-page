@@ -77,7 +77,7 @@ function deleteAll() {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-  //          'X-XSRF-TOKEN': csrfToken
+            'X-CSRF-TOKEN': csrfToken,
         }
     };
 
@@ -117,6 +117,7 @@ function renderPage(authenticated) {
         loginLink.style.display = "none"
         logoutLink.style.display = "flex"
         //  getEmail();
+        getCsrfToken()
     }
     else if (authenticated == "false") {
         loginLink.style.display = "flex"
@@ -130,4 +131,16 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
+function getCsrfToken() {
+    fetch('http://localhost:8080/csrf-token', {
+        method: 'GET',
+        credentials: 'include',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.csrfToken)
+        })
 }
