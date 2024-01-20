@@ -108,16 +108,13 @@ function logout() {
     .then(data => {
         // Use the newly obtained CSRF token in the logout request
         var csrfToken = data.csrfToken;
-        console.log(csrfToken)
-
-
 
         var requestOptions = {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': "O0m7WrjPVE6hQvSIrOiW_SvpXpd18YU2-hVCC_qZn26etiXSC3iJY939YnyMcMLsncWizk2Kc_YRwrAbwyUmM876rgvC00Ow"
+                'X-CSRF-TOKEN': csrfToken,
             },
         };
 
@@ -126,7 +123,7 @@ function logout() {
     .then(response => {
         response.text()
         if(response.status === 200){
-        //    window.location.href = "http://localhost:5500/home.html";
+            window.location.href = "http://localhost:5500/home.html";
         }
     })
     .then(result => console.log(result))
