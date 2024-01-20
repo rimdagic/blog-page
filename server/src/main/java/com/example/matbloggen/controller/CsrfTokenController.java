@@ -24,6 +24,7 @@ public class CsrfTokenController {
         System.out.println(csrfTokenMap);
 
         Cookie cookie = new Cookie("XSRF-TOKEN", csrfToken.getToken());
+        cookie.setAttribute("SameSite", "Lax");
         response.addCookie(cookie);
         return csrfTokenMap;
     }
