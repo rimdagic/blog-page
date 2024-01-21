@@ -31,36 +31,4 @@ public class CsrfTokenController {
         return csrfTokenMap;
     }
 
-
-
-/*
-
-    @GetMapping("/csrf-token")
-    public String getToken(HttpServletRequest request, HttpServletResponse response){
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-        return "csrfToken.getToken()";
-    }
-
-    */
-/*
-    @GetMapping("/csrf-token")
-    public String getToken(HttpServletRequest request, HttpServletResponse response) {
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            setCsrfCookie(response, csrfToken.getToken());
-        }
-
-        return csrfToken != null ? csrfToken.getToken() : null;
-    }
-
-    private void setCsrfCookie(HttpServletResponse response, String csrfToken) {
-        Cookie cookie = new Cookie("X-XSRF-TOKEN", csrfToken);
-        cookie.setPath("/");
-        cookie.setHttpOnly(false);
-        response.addCookie(cookie);
-    }
-    */
-
 }
