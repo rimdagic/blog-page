@@ -22,7 +22,10 @@ public class SecurityConfig {
                  //       .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRepository(new HttpSessionCsrfTokenRepository())
                         .ignoringRequestMatchers("/user/login")
+                        .ignoringRequestMatchers("/user/google")
                         .ignoringRequestMatchers("/user/logout"));
+
+
 
         http
 
@@ -37,12 +40,18 @@ public class SecurityConfig {
                         .requestMatchers("/search-posts").permitAll()
                         .requestMatchers("/post").permitAll()
 
-                        .requestMatchers("/blog-post").hasAuthority("USER")
+                        .requestMatchers("/user/google").authenticated()
+
+                        .requestMatchers("/blog-post").hasAnyAuthority("USER", "OAUTH2_USER")
 
 
                         .requestMatchers("/user/email").authenticated()
                         .requestMatchers("/csrf-token").authenticated()
                 )
+
+                .oauth2Login(Customizer.withDefaults())
+
+
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

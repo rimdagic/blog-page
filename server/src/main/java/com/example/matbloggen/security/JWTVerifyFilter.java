@@ -10,6 +10,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,7 +22,6 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
     String variableName = "SECRET_KEY";
     String secretKey = System.getenv(variableName);
 
-    private UserDetailsService userService;
     private CustomUserDetailsService customUserDetailsService;
 
     public JWTVerifyFilter(CustomUserDetailsService customUserDetailsService) {
@@ -31,6 +31,12 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // Check if the current authentication is OAuth2
+   //     if (isOAuth2Authentication()) {
+   //         filterChain.doFilter(request, response);
+   //         return;
+   //     }
 
         Cookie[] cookies = request.getCookies();
         String authCookie = "";
@@ -64,4 +70,9 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
         }
     }
 
+    private boolean isOAuth2Authentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().startsWith("OAUTH2_USER"));
+    }
 }

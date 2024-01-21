@@ -10,10 +10,17 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -118,4 +125,48 @@ public class UserService {
         return null;
 
     }
+
+    public String createGoogleUser(OAuth2AuthorizedClient googleUser) {
+        System.out.println("Google User: " + googleUser.getPrincipalName());
+
+        return jwtUtil.createToken("62cf9bda-0c54-4e9e-81b2-c0e810664f9c", "Google user");
+
+
+    }
+
+    public String getUserEmailUsingAccessToken(String accessToken) {
+            String userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + accessToken;
+            ResponseEntity<Map> responseEntity = new RestTemplate().getForEntity(userInfoEndpoint, Map.class);
+
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                Map<String, Object> userInfo = responseEntity.getBody();
+                return (String) userInfo.get("email");
+            } else {
+                return null;
+            }
+        }
+
+    public String createUser(String userEmail) {
+        if (!userRepository.findByEmail(userEmail).isPresent()) {
+            User user = new User();
+            user.setEmail(userEmail);
+            user.setPassword(passwordEncoderUtil.encodePassword(generateRandomString()));
+            user.setAuthority("USER");
+            userRepository.save(user);
+        }
+
+        return jwtUtil.createToken(userRepository.findByEmail(userEmail).get().getId().toString(), userEmail);
+    }
+
+
+    public static String generateRandomString() {
+        String randomString = UUID.randomUUID().toString().replace("-", "");
+        System.out.println("PASSWORD: "+ randomString);
+        return randomString.substring(0, 30);
+    }
+
 }
+
+
+
+
