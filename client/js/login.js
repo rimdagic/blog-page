@@ -18,18 +18,37 @@ function submitForm() {
 
     console.log("Sending request")
 
+    //var csrfToken = getCsrfToken();
+
+
 
     fetch('http://localhost:8080/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+  //          'X-CSRF-TOKEN': csrfToken // Add this line to include the CSRF token
         },
-        "credentials": "include",
+        "credentials": "include", 
         body: JSON.stringify(formData),
     })
         .then(response => response.text()) // Läs svaret som text
         .then(data => {
             console.log('Server Response:', data);
+
+
+
+
+            fetch('http://localhost:8080/csrf-token', {
+                method: 'GET',
+                credentials: 'include',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.csrfToken)
+                })
+
+
+
 
             if (data === "Login successful") {
                window.location.href = "http://localhost:5500/home.html";
@@ -40,4 +59,8 @@ function submitForm() {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+// Function to retrieve the CSRF token from the cookie or wherever it's stored
+function getCsrfToken() {
+    return document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$)|^.*$/, '$1');
 }

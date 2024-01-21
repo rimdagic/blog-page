@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request){
 
         String jwtToken =  userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
 
@@ -35,6 +35,14 @@ public class UserController {
         cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
+
+        Cookie jsessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
+        jsessionCookie.setMaxAge(-1); // Session cookie (valid until the browser is closed)
+        jsessionCookie.setPath("/"); // Set the cookie path
+
+        jsessionCookie.setAttribute("SameSite", "Lax");
+
+        response.addCookie(jsessionCookie);
 
         String authority = userService.getAuthorityByEmail(loginRequestDto.email);
         if(authority.equals("ADMIN")){
@@ -73,6 +81,12 @@ public class UserController {
         jwtTokenCookie.setAttribute("SameSite", "Lax");
 
         response.addCookie(jwtTokenCookie);
+
+
+        Cookie cookie = new Cookie("XSRF-TOKEN", "");
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
 
         return ResponseEntity.ok("Succesfully logged out");
     }

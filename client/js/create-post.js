@@ -1,5 +1,6 @@
 adjustToAuth();
 var emailDisplay = document.getElementById("email-display");
+var csrfToken = getCookie("XSRF-TOKEN")
 
 function submitForm() {
     var formData = {
@@ -8,7 +9,7 @@ function submitForm() {
     };
 
 
-    
+
     if (!headline.checkValidity()) {
         alert('Ange blogginläggets rubrik.');
         return;
@@ -18,23 +19,23 @@ function submitForm() {
         alert('Fyll i blogginläggets innehåll.');
         return;
     }
-
     console.log("Sending request")
-
 
     fetch('http://localhost:8080/blog-post', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
         },
         body: JSON.stringify(formData),
     })
-        .then(response => {response.text()
-        if(response.status === 200){
-            window.location.href = "http://localhost:5500/home.html";
-        }
-    })
+        .then(response => {
+            response.text()
+            if (response.status === 200) {
+                window.location.href = "http://localhost:5500/home.html";
+            }
+        })
 
         .then(data => {
 
@@ -46,74 +47,78 @@ function submitForm() {
 }
 
 
-function adjustToAuth(){
+function adjustToAuth() {
     var requestOptions = {
         method: 'GET',
         redirect: 'follow',
         credentials: "include"
-      };
-      
-      fetch("http://localhost:8080/user/auth", requestOptions)
+    };
+
+    fetch("http://localhost:8080/user/auth", requestOptions)
         .then(response => response.text())
         .then(result => renderPage(result)
         )
         .catch(error => console.log('error', error));
-    }
+}
 
-    function renderPage(authenticated){
-        var loginLink = document.getElementById("login-link")
-        var logoutLink = document.getElementById("logout-link")
-        var createPostButton = document.getElementById("create-post-btn")
-    
-    if(authenticated == "true"){
-            loginLink.style.display = "none"
-            logoutLink.style.display = "flex"
-            getEmail();
-        } 
-        else if (authenticated == "false") {
-            loginLink.style.display = "flex"
-            logoutLink.style.display = "none"
-            createPostButton.style.display = "none"
-           // emailDisplay.innerText = "EPOST"
-    
-        } 
-    }
+function renderPage(authenticated) {
+    var loginLink = document.getElementById("login-link")
+    var logoutLink = document.getElementById("logout-link")
+    var createPostButton = document.getElementById("create-post-btn")
 
-    function getEmail(){
-    
-        var requestOptions = {
-            method: 'GET',
-            credentials: 'include',
-            redirect: 'follow'
-          };
-          
-          fetch("http://localhost:8080/user/email", requestOptions)
-            .then(response => response.text())
-            .then(result => {
-                console.log(result)
-                emailDisplay.innerText = result;
-            }
-                
-                )
-            .catch(error => console.log('error', error));
+    if (authenticated == "true") {
+        loginLink.style.display = "none"
+        logoutLink.style.display = "flex"
+        getEmail();
     }
+    else if (authenticated == "false") {
+        loginLink.style.display = "flex"
+        logoutLink.style.display = "none"
+        createPostButton.style.display = "none"
 
-    function logout(){
-        var requestOptions = {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-          };
-    
-        fetch("http://localhost:8080/user/logout", requestOptions)
+    }
+}
+
+function getEmail() {
+
+    var requestOptions = {
+        method: 'GET',
+        credentials: 'include',
+        redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/user/email", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            console.log(result)
+            emailDisplay.innerText = result;
+        })
+        .catch(error => console.log('error', error));
+}
+
+function logout() {
+    var requestOptions = {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        }
+    };
+
+    fetch("http://localhost:8080/user/logout", requestOptions)
         .then(response => {
             response.text()
-            if(response.status === 200){
+            if (response.status === 200) {
                 window.location.href = "http://localhost:5500/home.html";
             }
         })
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
-    }
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}

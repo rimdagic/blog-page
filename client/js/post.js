@@ -1,4 +1,5 @@
 var emailDisplay = document.getElementById("email-display");
+var csrfToken = getCookie("XSRF-TOKEN")
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get the post ID from the URL parameter
@@ -72,6 +73,7 @@ function adjustToAuth(){
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
             }
           };
     
@@ -104,4 +106,11 @@ function adjustToAuth(){
                 
                 )
             .catch(error => console.log('error', error));
+    }
+
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
     }
