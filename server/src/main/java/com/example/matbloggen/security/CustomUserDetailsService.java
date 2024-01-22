@@ -18,7 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-
     User loadUserById(String id){
         Optional<User> optionalUser = userRepository.findById(UUID.fromString(id));
         if(optionalUser.isPresent()){

@@ -3,24 +3,19 @@ package com.example.matbloggen.controller;
 import com.example.matbloggen.dtos.LoginRequestDto;
 import com.example.matbloggen.service.UserService;
 
-import com.example.matbloggen.utility.JwtUtil;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
@@ -70,8 +65,6 @@ public class UserController {
         }
     }
 
-
-
     @GetMapping("/user/google")
     private void google(@RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient client, HttpServletResponse response) throws GeneralSecurityException, IOException {
 
@@ -86,23 +79,11 @@ public class UserController {
         cookie.setAttribute("SameSite", "Lax");
         cookie.setSecure(false);
         cookie.setHttpOnly(true);
-
+        System.out.println("google jwt token: " + jwtToken);
         response.addCookie(cookie);
 
         response.sendRedirect("http://localhost:5500/home.html");
     }
-
-
-
-
-
-
-
-/*    @GetMapping("/user")
-    public ResponseEntity<String> getUserEmail(@RequestParam UUID id){
-        String email = userService.getUserEmail(id);
-        return ResponseEntity.ok(email);
-    }*/
 
     @GetMapping("/user/email")
     public ResponseEntity<String> getUserEmail(HttpServletRequest request){
@@ -112,15 +93,18 @@ public class UserController {
 
     @PostMapping("/user/logout")
     public ResponseEntity<String> logout(HttpServletResponse response){
-        Cookie jwtTokenCookie = new Cookie("jwtToken", "");
+        Cookie jwtTokenCookie = new Cookie("jwtToken", null);
         jwtTokenCookie.setPath("/");
         jwtTokenCookie.setMaxAge(0);
         jwtTokenCookie.setSecure(false); // Set to true if served over HTTPS
         jwtTokenCookie.setHttpOnly(true);
         jwtTokenCookie.setAttribute("SameSite", "Lax");
-
         response.addCookie(jwtTokenCookie);
 
+        Cookie jsessionid = new Cookie("JSESSIONID", null);
+        jsessionid.setPath("/");
+        jsessionid.setMaxAge(0);
+        response.addCookie(jsessionid);
 
         Cookie cookie = new Cookie("XSRF-TOKEN", "");
         cookie.setPath("/");
@@ -135,5 +119,4 @@ public class UserController {
         boolean isAuthenticated = userService.checkAuth(request);
         return ResponseEntity.ok(isAuthenticated);
     }
-
 }
