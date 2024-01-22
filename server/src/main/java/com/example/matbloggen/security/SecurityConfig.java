@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
@@ -25,10 +24,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/user/google")
                         .ignoringRequestMatchers("/user/logout"));
 
-
-
         http
-
                 .addFilterAfter(new JWTVerifyFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/delete-posts").hasAuthority("ADMIN")
@@ -50,7 +46,6 @@ public class SecurityConfig {
                 )
 
                 .oauth2Login(Customizer.withDefaults())
-
 
                 .httpBasic(Customizer.withDefaults());
         return http.build();
