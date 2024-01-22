@@ -17,8 +17,11 @@ body {
 }
 
 #login-form {
-    align-items: start;
-    justify-content: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh;  *//* Optional: This ensures the form takes up the full height of the viewport */
 }
 
 #login-form-div{
@@ -32,4 +35,39 @@ body {
 
 #logout-link {
     display: none;
+}
+
+#footer {
+    min-width: 20em;
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    padding: 5px;
+    margin-top: 200px;
+    justify-content: center;
+}
+
+#footer div {
+    min-width: 20em;
+}
+
+#footer a {
+    display: flex;
+    color: #E9F1F1;
+    text-decoration: none;
+    font-size: small;
+}
+
+#footer a span {
+    flex: 1;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
+#footer a:hover {
+    text-decoration: underline;
 }

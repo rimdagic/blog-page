@@ -44,3 +44,27 @@ a, a:active, :visited{
 #logout-link {
     display: none;
 }
+
+#footer {
+    min-width: 20em;
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    padding: 5px;
+    margin-top: 200px;
+    justify-content: center;
+}
+
+#footer div {
+    min-width: 20em;
+}
+
+#footer a {
+    color: #E9F1F1;
+    text-decoration: none;
+    font-size: small;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
