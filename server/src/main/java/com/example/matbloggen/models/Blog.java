@@ -15,10 +15,10 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
+    @Column(length = 127)
     private String headline;
 
-    @Column
+    @Column(length = 4095)
     private String content;
 
     @Column
