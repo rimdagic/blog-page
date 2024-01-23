@@ -8,8 +8,6 @@ function submitForm() {
         content: document.getElementById('content').value,
     };
 
-
-
     if (!headline.checkValidity()) {
         alert('Ange blogginläggets rubrik.');
         return;
@@ -26,20 +24,15 @@ function submitForm() {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
+            'X-XSRF-TOKEN': csrfToken
         },
         body: JSON.stringify(formData),
     })
         .then(response => {
-            response.text()
+
             if (response.status === 200) {
                 window.location.href = "http://localhost:5500/home.html";
             }
-        })
-
-        .then(data => {
-
-            console.log(data);
         })
         .catch(error => {
             console.error('Error:', error);

@@ -36,20 +36,6 @@ function submitForm() {
             console.log('Server Response:', data);
 
 
-
-
-            fetch('http://localhost:8080/csrf-token', {
-                method: 'GET',
-                credentials: 'include',
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.csrfToken)
-                })
-
-
-
-
             if (data === "Login successful") {
                window.location.href = "http://localhost:5500/home.html";
             }else if(data === "Login successful admin"){

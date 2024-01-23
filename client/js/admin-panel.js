@@ -1,7 +1,8 @@
 var postsList = document.getElementById("posts-list");
 
+var csrfToken;
 adjustToAuth();
-var csrfToken = getCookie("XSRF-TOKEN")
+
 
 fetch('http://localhost:8080/all-posts')
     .then(response => {
@@ -72,12 +73,13 @@ function removeAllChildren(element) {
 }
 
 function deleteAll() {
+    csrfToken = getCookie("XSRF-TOKEN")
     var requestOptions = {
         method: 'DELETE',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
+            'X-XSRF-TOKEN': csrfToken,
         }
     };
 
