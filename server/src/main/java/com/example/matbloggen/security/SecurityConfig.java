@@ -9,7 +9,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
 @Configuration
@@ -22,7 +21,7 @@ public class SecurityConfig {
                 .csrf((csrf) -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-                               .ignoringRequestMatchers("/user/login")
+                        .ignoringRequestMatchers("/user/login")
                         .ignoringRequestMatchers("/user/logout"));
 
         http

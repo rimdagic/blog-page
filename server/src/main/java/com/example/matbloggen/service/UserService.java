@@ -6,6 +6,7 @@ import com.example.matbloggen.models.User;
 import com.example.matbloggen.repository.UserRepository;
 import com.example.matbloggen.utility.JwtUtil;
 import com.example.matbloggen.utility.PasswordEncoderUtil;
+import com.example.matbloggen.utility.PasswordGenerator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,13 +124,6 @@ public class UserService {
 
     }
 
-    public String createGoogleUser(OAuth2AuthorizedClient googleUser) {
-        System.out.println("Google User: " + googleUser.getPrincipalName());
-
-        return jwtUtil.createToken("62cf9bda-0c54-4e9e-81b2-c0e810664f9c", "Google user");
-
-
-    }
 
     public String getUserEmailUsingAccessToken(String accessToken) {
             String userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + accessToken;
@@ -147,19 +141,12 @@ public class UserService {
         if (!userRepository.findByEmail(userEmail).isPresent()) {
             User user = new User();
             user.setEmail(userEmail);
-            user.setPassword(passwordEncoderUtil.encodePassword(generateRandomString()));
+            user.setPassword(passwordEncoderUtil.encodePassword(PasswordGenerator.generateRandomPassword(100)));
             user.setAuthority("USER");
             userRepository.save(user);
         }
 
         return jwtUtil.createToken(userRepository.findByEmail(userEmail).get().getId().toString(), userEmail);
-    }
-
-
-    public static String generateRandomString() {
-        String randomString = UUID.randomUUID().toString().replace("-", "");
-        System.out.println("PASSWORD: "+ randomString);
-        return randomString.substring(0, 30);
     }
 
 }

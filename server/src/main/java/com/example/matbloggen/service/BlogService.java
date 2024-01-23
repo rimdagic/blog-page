@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,27 +35,33 @@ public class BlogService {
     }
 
     public void postBlog(PostBlogDto postBlogDto, String token) {
-        try {
-            UUID userUUID = UUID.fromString(jwtUtil.extractUserId(token));
 
-            // Check if user exists in userRepository
-            User user = userRepository.findById(userUUID)
-                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        if(postBlogDto.headline.isBlank() || postBlogDto.content.isBlank() ||
+        postBlogDto.headline.length() > 127 || postBlogDto.content.length() > 4095){
+            throw new RuntimeException("Invalid input");
+        } else {
+            try {
+                UUID userUUID = UUID.fromString(jwtUtil.extractUserId(token));
 
-            Date date = new Date();
+                // Check if user exists in userRepository
+                User user = userRepository.findById(userUUID)
+                        .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-            Blog blog = new Blog();
-            blog.setHeadline(postBlogDto.headline);
-            blog.setContent(postBlogDto.content);
-            blog.setDate(date);
-            blog.setUser(user);
+                Date date = new Date();
 
-            blogRepository.save(blog);
+                Blog blog = new Blog();
+                blog.setHeadline(postBlogDto.headline);
+                blog.setContent(postBlogDto.content);
+                blog.setDate(date);
+                blog.setUser(user);
 
-        } catch (TokenExpiredException e) {
-            throw new TokenExpiredException("Token has expired", e.getExpiredOn());
-        } catch (JWTVerificationException e) {
-            throw new RuntimeException("JWT verification failed", e);
+                blogRepository.save(blog);
+
+            } catch (TokenExpiredException e) {
+                throw new TokenExpiredException("Token has expired", e.getExpiredOn());
+            } catch (JWTVerificationException e) {
+                throw new RuntimeException("JWT verification failed", e);
+            }
         }
     }
 
