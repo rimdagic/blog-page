@@ -74,28 +74,13 @@ function removeAllChildren(element) {
     }
 }
 
-function deleteAll() {
-    var requestOptions = {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    };
-
-    fetch("http://localhost:8080/delete-posts", requestOptions)
-        .then(response => response.text())
-        .then(result => location.reload())
-        .catch(error => console.log('error', error));
-}
-
 function logout() {
             var requestOptions = {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
+                   // 'X-CSRF-TOKEN': csrfToken,
                 }}
             
 
@@ -152,10 +137,6 @@ function getCsrfToken() {
         method: 'GET',
         credentials: 'include',
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.csrfToken)
-        })
 }
 
 function getCookie(name) {
