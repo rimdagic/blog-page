@@ -30,38 +30,41 @@ public class UserController {
 
     @PostMapping("/user/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request){
+        if(loginRequestDto.email.isBlank() || loginRequestDto.password.isBlank() ||
+                loginRequestDto.email.length() > 320 || loginRequestDto.password.length() > 99) {
+            throw new RuntimeException("Invalid input");
+        }else {
 
-        String jwtToken =  userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
+            String jwtToken = userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
 
-        Cookie cookie = new Cookie("jwtToken", jwtToken);
-        cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
-        cookie.setPath("/"); // Set the cookie path
-        cookie.setAttribute("SameSite", "Lax");
-        cookie.setSecure(false);
-        cookie.setHttpOnly(true);
+            Cookie cookie = new Cookie("jwtToken", jwtToken);
+            cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
+            cookie.setPath("/"); // Set the cookie path
+            cookie.setAttribute("SameSite", "Lax");
+            cookie.setSecure(false);
+            cookie.setHttpOnly(true);
 
-        response.addCookie(cookie);
+            response.addCookie(cookie);
 
-        Cookie jsessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
-        jsessionCookie.setMaxAge(-1); // Session cookie (valid until the browser is closed)
-        jsessionCookie.setPath("/"); // Set the cookie path
+            Cookie jsessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
+            jsessionCookie.setMaxAge(-1); // Session cookie (valid until the browser is closed)
+            jsessionCookie.setPath("/"); // Set the cookie path
 
-        jsessionCookie.setAttribute("SameSite", "Lax");
+            jsessionCookie.setAttribute("SameSite", "Lax");
 
-        response.addCookie(jsessionCookie);
+            response.addCookie(jsessionCookie);
 
-        String authority = userService.getAuthorityByEmail(loginRequestDto.email);
-        if(authority.equals("ADMIN")){
-            System.out.println("admin");
-            return ResponseEntity.ok("Login successful admin");
-        }
-        else if(authority.equals("USER")){
-            System.out.println("user");
-            return ResponseEntity.ok("Login successful");
-        }
-        else{
-            System.out.println("error");
-            return ResponseEntity.ok("not ok");
+            String authority = userService.getAuthorityByEmail(loginRequestDto.email);
+            if (authority.equals("ADMIN")) {
+                System.out.println("admin");
+                return ResponseEntity.ok("Login successful admin");
+            } else if (authority.equals("USER")) {
+                System.out.println("user");
+                return ResponseEntity.ok("Login successful");
+            } else {
+                System.out.println("error");
+                return ResponseEntity.ok("not ok");
+            }
         }
     }
 
