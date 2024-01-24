@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,13 +37,11 @@ public class UserService {
         return existing.isPresent();
     }
 
-    //generates a token based on email and password, since email is more unique than a name
     public String generateTokenForUserByEmailAndPassword(String email, String password) {
         try {
             Optional<User> optionalUser = userRepository.findByEmail(email);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                //will compare the raw password with the hashed one along with the salt, if they match, its ok
                 if (passwordEncoderUtil.verifyPassword(password, user.getPassword())) {
                     return jwtUtil.createToken(String.valueOf(user.getId()), user.getEmail());
                 } else {
@@ -94,21 +91,14 @@ public class UserService {
         String jwt = getJwtFromCookie(request);
         String userId = jwtUtil.extractUserId(jwt);
         Optional<User> optionalUser = userRepository.findById(UUID.fromString(userId));
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             return optionalUser.get().getEmail();
         } else return null;
     }
 
-/*    public String getUserEmail(UUID id) {
-        User user = userRepository.findEmailById(id);
-        return user.getEmail();
-    }*/
-
-
     public String getJwtFromCookie(HttpServletRequest request) {
 
         Cookie[] cookies = request.getCookies();
-
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwtToken".equals(cookie.getName())) {
@@ -121,21 +111,20 @@ public class UserService {
             }
         }
         return null;
-
     }
 
 
     public String getUserEmailUsingAccessToken(String accessToken) {
-            String userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + accessToken;
-            ResponseEntity<Map> responseEntity = new RestTemplate().getForEntity(userInfoEndpoint, Map.class);
+        String userInfoEndpoint = "https://www.googleapis.com/oauth2/v3/userinfo?access_token=" + accessToken;
+        ResponseEntity<Map> responseEntity = new RestTemplate().getForEntity(userInfoEndpoint, Map.class);
 
-            if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                Map<String, Object> userInfo = responseEntity.getBody();
-                return (String) userInfo.get("email");
-            } else {
-                return null;
-            }
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            Map<String, Object> userInfo = responseEntity.getBody();
+            return (String) userInfo.get("email");
+        } else {
+            return null;
         }
+    }
 
     public String createUser(String userEmail) {
         if (!userRepository.findByEmail(userEmail).isPresent()) {

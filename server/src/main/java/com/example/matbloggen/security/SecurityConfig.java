@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -38,15 +37,13 @@ public class SecurityConfig {
 
                         .requestMatchers("/user/google").authenticated()
 
-                        .requestMatchers("/blog-post").hasAnyAuthority("USER", "OAUTH2_USER")
-
+                        .requestMatchers("/blog-post").hasAuthority("USER")
 
                         .requestMatchers("/user/email").authenticated()
                         .requestMatchers("/csrf-token").authenticated()
                 )
 
                 .oauth2Login(Customizer.withDefaults())
-
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

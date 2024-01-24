@@ -19,8 +19,6 @@ public class PasswordGenerator {
             char randomChar = ALLOWED_CHARACTERS.charAt(randomIndex);
             password.append(randomChar);
         }
-        System.out.println(password.toString());
-
         return password.toString();
     }
 }

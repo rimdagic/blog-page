@@ -27,7 +27,7 @@ public class User {
 
     private String authority;
 
-    public Collection<GrantedAuthority> getAuthorities(){
+    public Collection<GrantedAuthority> getAuthorities() {
         GrantedAuthority grantedAuthority = this::getAuthority;
         return Collections.singleton(grantedAuthority);
     }

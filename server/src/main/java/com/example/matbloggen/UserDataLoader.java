@@ -9,11 +9,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
+
 @Component
 public class UserDataLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PasswordEncoderUtil passwordEncoderUtil;
+
     @Autowired
     public UserDataLoader(UserRepository userRepository, UserService userService, PasswordEncoderUtil passwordEncoderUtil) {
         this.userRepository = userRepository;
@@ -30,8 +32,8 @@ public class UserDataLoader implements CommandLineRunner {
         createUser("five@one.com", "pass123", "USER");
     }
 
-    private void createUser(String email, String password, String authority){
-        if(!userService.doesUserExist(email)) {
+    private void createUser(String email, String password, String authority) {
+        if (!userService.doesUserExist(email)) {
             String userEmail = email;
             String userPassword = passwordEncoderUtil.encodePassword(password);
             String userAuthority = authority;

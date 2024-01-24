@@ -31,12 +31,6 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Check if the current authentication is OAuth2
-   //     if (isOAuth2Authentication()) {
-   //         filterChain.doFilter(request, response);
-   //         return;
-   //     }
-
         Cookie[] cookies = request.getCookies();
         String authCookie = "";
 
@@ -67,11 +61,5 @@ public class JWTVerifyFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             throw new IllegalStateException("Failed to authenticate");
         }
-    }
-
-    private boolean isOAuth2Authentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().startsWith("OAUTH2_USER"));
     }
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, UUID> {
-
     List<Blog> findByHeadlineContaining(String searchWord);
+
     Blog getBlogById(UUID id);
 }

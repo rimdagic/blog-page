@@ -23,7 +23,7 @@ public class BlogService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil){
+    public BlogService(BlogRepository blogRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
@@ -36,14 +36,13 @@ public class BlogService {
 
     public void postBlog(PostBlogDto postBlogDto, String token) {
 
-        if(postBlogDto.headline.isBlank() || postBlogDto.content.isBlank() ||
-        postBlogDto.headline.length() > 127 || postBlogDto.content.length() > 4095){
+        if (postBlogDto.headline.isBlank() || postBlogDto.content.isBlank() ||
+                postBlogDto.headline.length() > 127 || postBlogDto.content.length() > 4095) {
             throw new RuntimeException("Invalid input");
         } else {
             try {
                 UUID userUUID = UUID.fromString(jwtUtil.extractUserId(token));
 
-                // Check if user exists in userRepository
                 User user = userRepository.findById(userUUID)
                         .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
@@ -74,7 +73,7 @@ public class BlogService {
         blogRepository.deleteAll();
     }
 
-    public Blog getBlogById(UUID id){
+    public Blog getBlogById(UUID id) {
         System.out.println("uuid " + id.toString());
         return blogRepository.getBlogById(id);
     }

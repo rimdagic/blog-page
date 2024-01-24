@@ -24,22 +24,22 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request){
-        if(loginRequestDto.email.isBlank() || loginRequestDto.password.isBlank() ||
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request) {
+        if (loginRequestDto.email.isBlank() || loginRequestDto.password.isBlank() ||
                 loginRequestDto.email.length() > 320 || loginRequestDto.password.length() > 99) {
             throw new RuntimeException("Invalid input");
-        }else {
+        } else {
 
             String jwtToken = userService.generateTokenForUserByEmailAndPassword(loginRequestDto.email, loginRequestDto.password);
 
             Cookie cookie = new Cookie("jwtToken", jwtToken);
-            cookie.setMaxAge(36000); // Set the cookie expiration time in seconds (adjust as needed)
-            cookie.setPath("/"); // Set the cookie path
+            cookie.setMaxAge(36000);
+            cookie.setPath("/");
             cookie.setAttribute("SameSite", "Lax");
             cookie.setSecure(false);
             cookie.setHttpOnly(true);
@@ -47,8 +47,8 @@ public class UserController {
             response.addCookie(cookie);
 
             Cookie jsessionCookie = new Cookie("JSESSIONID", request.getSession().getId());
-            jsessionCookie.setMaxAge(-1); // Session cookie (valid until the browser is closed)
-            jsessionCookie.setPath("/"); // Set the cookie path
+            jsessionCookie.setMaxAge(-1);
+            jsessionCookie.setPath("/");
 
             jsessionCookie.setAttribute("SameSite", "Lax");
 
@@ -89,13 +89,13 @@ public class UserController {
     }
 
     @GetMapping("/user/email")
-    public ResponseEntity<String> getUserEmail(HttpServletRequest request){
+    public ResponseEntity<String> getUserEmail(HttpServletRequest request) {
         String email = userService.getEmail(request);
         return ResponseEntity.ok().body(email);
     }
 
     @PostMapping("/user/logout")
-    public ResponseEntity<String> logout(HttpServletResponse response){
+    public ResponseEntity<String> logout(HttpServletResponse response) {
         Cookie jwtTokenCookie = new Cookie("jwtToken", null);
         jwtTokenCookie.setPath("/");
         jwtTokenCookie.setMaxAge(0);
@@ -118,7 +118,7 @@ public class UserController {
     }
 
     @GetMapping("/user/auth")
-    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request){
+    public ResponseEntity<Boolean> checkAuth(HttpServletRequest request) {
         boolean isAuthenticated = userService.checkAuth(request);
         return ResponseEntity.ok(isAuthenticated);
     }

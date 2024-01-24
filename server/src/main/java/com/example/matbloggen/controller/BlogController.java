@@ -16,13 +16,14 @@ import java.util.UUID;
 public class BlogController {
 
     private BlogService blogService;
-    public BlogController(BlogService blogService){
+
+    public BlogController(BlogService blogService) {
         this.blogService = blogService;
     }
 
     @CrossOrigin(origins = "http://localhost:5500/", allowCredentials = "true")
     @PostMapping("/blog-post")
-    public ResponseEntity<String> post(@RequestBody PostBlogDto postBlogDto, HttpServletRequest request){
+    public ResponseEntity<String> post(@RequestBody PostBlogDto postBlogDto, HttpServletRequest request) {
 
         String jwt = "";
         Cookie[] cookies = request.getCookies();
@@ -31,7 +32,6 @@ public class BlogController {
                 if ("jwtToken".equals(cookie.getName())) {
                     jwt = cookie.getValue();
                     blogService.postBlog(postBlogDto, jwt);
-
                     return ResponseEntity.ok("Post success");
                 }
             }
@@ -46,7 +46,7 @@ public class BlogController {
     }
 
     @GetMapping("/search-posts")
-    public ResponseEntity<List> findPosts(@RequestParam String searchWord){
+    public ResponseEntity<List> findPosts(@RequestParam String searchWord) {
         return ResponseEntity.ok(blogService.getSpecific(searchWord));
     }
 
